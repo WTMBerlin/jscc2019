@@ -1,0 +1,12 @@
+{
+  "name": "week-3-async-file-read",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Armagan Amcalar <armagan@amcalar.com>",
+  "license": "ISC",
+  "dependencies": {}
+}
