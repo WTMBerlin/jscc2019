@@ -16,7 +16,7 @@ module.exports = class Service {
             await this.saveAll([])
             return resolve([])
           }
-          
+
           return reject(err)
         }
 

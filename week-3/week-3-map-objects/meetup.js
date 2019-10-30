@@ -2,10 +2,10 @@ const Chalk = require('chalk')
 const Person = require('./person')
 
 module.exports = class Meetup {
-    constructor(name, location) {
+    constructor(name, location, attendees = []) {
         this.name = name
         this.location = location
-        this.attendees = []
+        this.attendees = attendees
     }
 
     report() {
@@ -13,7 +13,7 @@ module.exports = class Meetup {
     }
 
     static create({ name, location, attendees }) {
-        const meetup = new Meetup(name, location)
+        const meetup = new Meetup(name, location, attendees)
 
         meetup.attendees = attendees.map(Person.create)
 
