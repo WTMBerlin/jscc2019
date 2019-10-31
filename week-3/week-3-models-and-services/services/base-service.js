@@ -42,12 +42,12 @@ module.exports = class Service {
 
   async  del(itemId) {
     const allItems = await this.findAll()
-    const personIndex = allItems.findIndex(p => p.id == itemId)
-    if (personIndex < 0) return
+    const itemIndex = allItems.findIndex(p => p.id == itemId)
+    if (itemIndex < 0) return
 
-    allItems.splice(personIndex, 1)
+    allItems.splice(itemIndex, 1)
 
-    this.saveAll(allItems)
+    await this.saveAll(allItems)
   }
 
   async find(itemId = 1) {
@@ -56,9 +56,9 @@ module.exports = class Service {
     return allItems.find(p => p.id == itemId)
   }
 
-  async saveAll(people) {
+  async saveAll(items) {
     return new Promise((resolve, reject) => {
-      fs.writeFile(this.dbPath, Flatted.stringify(people), (err, file) => {
+      fs.writeFile(this.dbPath, Flatted.stringify(items), (err, file) => {
         if (err) return reject(err)
 
         resolve()
