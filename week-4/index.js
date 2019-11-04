@@ -1,32 +1,37 @@
-const Person = require('./models/person')
-const Meetup = require('./models/meetup')
+const express = require('express')
+const bodyParser = require('body-parser')
+
 const PersonService = require('./services/person-service')
-const MeetupService = require('./services/meetup-service')
 
-console.log('Hello World!')
-console.log('Hello World!')
+const app = express()
 
-async function main() {
-  const mert = new Person('Mert', 33)
-  const armagan = new Person('Armagan', 34)
+app.set('view engine', 'pug')
+app.use(bodyParser.json())
 
-  const wtmb = new Meetup('Women Tech Makers Berlin', 'Eurostaff')
-  armagan.attend(wtmb)
-  mert.attend(wtmb)
-  wtmb.report()
+app.get('/', (req, res) => {
+  res.render('index')
+})
 
-  await PersonService.add(mert)
-  await PersonService.add(armagan)
-
+app.get('/person/all', async (req, res) => {
   const people = await PersonService.findAll()
+  res.render('person', { people })
+})
 
-  console.log(people[0].name)
+app.get('/person/:id', async (req, res) => {
+  const user = await PersonService.find(req.params.id)
+  res.send(user)
+})
 
-  await PersonService.del(1)
+app.post('/person', async (req, res) => {
+  const user = await PersonService.add(req.body)
+  res.send(user)
+})
 
-  const newPeople = await PersonService.findAll()
-  
-  console.log(newPeople[0].name)
-}
+app.delete('/person/:id', async (req, res) => {
+  const user = await PersonService.del(req.params.id)
+  res.send(user)
+})
 
-main()
+app.listen(3000, () => {
+  console.log('Server listening')
+})
