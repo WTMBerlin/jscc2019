@@ -2,9 +2,7 @@ const BaseService = require('./base-service')
 const MeetupModel = require('../models/meetup')
 
 class MeetupService extends BaseService {
-    constructor() {
-        super(MeetupModel, `${__dirname}/../meetup-database.json`)
-    }
+    model = MeetupModel
 }
 
 module.exports = new MeetupService()

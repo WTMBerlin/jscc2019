@@ -14,6 +14,7 @@
     "express": "^4.17.1",
     "flatted": "^2.0.1",
     "mongoose": "^5.7.9",
+    "mongoose-autopopulate": "^0.9.1",
     "pug": "^2.0.4"
   },
   "devDependencies": {
