@@ -1,17 +1,10 @@
-module.exports = class Person {
-    constructor(name, age, meetups = [], id) {
-        this.name = name
-        this.age = age
-        this.meetups = meetups
-        this.id = id
-    }
+const mongoose = require('mongoose')
 
-    attend(meetup) {
-        this.meetups.push(meetup.name)
-        meetup.attendees.push(this)
-    }
+const PersonSchema = new mongoose.Schema({
+    name: String,
+    age: Number
+})
 
-    static create({ name, age, meetups, id }) {
-        return new Person(name, age, meetups, id);
-    }
-}
+const PersonModel = mongoose.model('Person', PersonSchema)
+
+module.exports = PersonModel

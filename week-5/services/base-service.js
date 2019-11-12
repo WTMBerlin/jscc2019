@@ -9,35 +9,11 @@ module.exports = class Service {
 
 
   async findAll() {
-    return new Promise((resolve, reject) => {
-      fs.readFile(this.dbPath, 'utf8', async (err, file) => {
-        if (err) {
-          if (err.code == 'ENOENT') {
-            await this.saveAll([])
-            return resolve([])
-          }
-
-          return reject(err)
-        }
-
-        const items = Flatted.parse(file).map(this.model.create)
-
-        resolve(items)
-      })
-    })
+    return this.model.find()
   }
 
   async add(item) {
-    const allItems = await this.findAll()
-    const lastItem = allItems[allItems.length - 1]
-    const lastItemsId = lastItem && lastItem.id || 0
-    item.id = lastItemsId + 1
-
-    allItems.push(item)
-
-    await this.saveAll(allItems)
-
-    return item
+    return this.model.create(item)
   }
 
   async  del(itemId) {
