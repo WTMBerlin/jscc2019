@@ -1,17 +1,35 @@
-module.exports = class Person {
-    constructor(name, age, meetups = [], id) {
-        this.name = name
-        this.age = age
-        this.meetups = meetups
-        this.id = id
-    }
+const mongoose = require('mongoose')
 
-    attend(meetup) {
-        this.meetups.push(meetup.name)
-        meetup.attendees.push(this)
-    }
+const PersonSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true,
+        minlength: 2
+    },
+    age: {
+        type: Number,
+        required: true,
+        min: 18
+    },
+    meetups: [{
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'Meetup',
+        autopopulate: {
+            maxDepth: 1
+        }
+    }]
+})
 
-    static create({ name, age, meetups, id }) {
-        return new Person(name, age, meetups, id);
-    }
-}
+PersonSchema.methods.findPeersOver18 = function (cb) {
+    return PersonModel.find({
+        age: {
+            $gte: 18
+        }
+    });
+};
+
+PersonSchema.plugin(require('mongoose-autopopulate'))
+
+const PersonModel = mongoose.model('Person', PersonSchema)
+
+module.exports = PersonModel

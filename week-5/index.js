@@ -4,6 +4,8 @@ const bodyParser = require('body-parser')
 const personRouter = require('./routes/person')
 const meetupRouter = require('./routes/meetup')
 
+require('./mongo-connection')
+
 const app = express()
 
 app.set('view engine', 'pug')

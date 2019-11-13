@@ -1,18 +1,19 @@
-const chalk = require('chalk')
+const mongoose = require('mongoose')
 
-module.exports = class Meetup {
-    constructor(name, location, attendees = [], id) {
-        this.name = name
-        this.location = location
-        this.attendees = attendees
-        this.id = id
-    }
+const MeetupSchema = new mongoose.Schema({
+    name: String,
+    location: String,
+    attendees: [{
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'Person',
+        autopopulate: {
+            maxDepth: 1
+        }
+    }]
+})
 
-    report() {
-        console.log(chalk.blue.bgRed.bold(this.name), 'meetup is held at', chalk.green(this.location), 'and number of attendees are', this.attendees.length)
-    }
+MeetupSchema.plugin(require('mongoose-autopopulate'))
 
-    static create({ name, location, attendees, id }) {
-        return new Meetup(name, location, attendees, id)
-    }
-}
+const MeetupModel = mongoose.model('Meetup', MeetupSchema)
+
+module.exports = MeetupModel
