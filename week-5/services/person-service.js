@@ -2,8 +2,13 @@ const BaseService = require('./base-service')
 const PersonModel = require('../models/person')
 
 class PersonService extends BaseService {
-    constructor() {
-        super(PersonModel, `${__dirname}/../person-database.json`)
+    model = PersonModel
+
+    async attendMeetup(person, meetup) {
+        person.meetups.push(meetup)
+        meetup.attendees.push(person)
+        await person.save()
+        await meetup.save()
     }
 }
 
