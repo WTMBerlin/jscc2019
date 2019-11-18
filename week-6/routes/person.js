@@ -9,6 +9,11 @@ router.get('/all', async (req, res) => {
   res.render('list', { items: people })
 })
 
+router.get('/all/json', async (req, res) => {
+  const people = await PersonService.findAll()
+  res.send(people)
+})
+
 router.get('/:id', async (req, res) => {
   const user = await PersonService.find(req.params.id)
   res.render('data', { data: user })

@@ -20,7 +20,7 @@ test('Create new person', async t => {
 })
 
 test('Fetch a person', async t => {
-  t.plan(2)
+  t.plan(3)
   const personToCreate = {
     name: 'Maria Ovsyannikova',
     age: 25,
@@ -28,13 +28,17 @@ test('Fetch a person', async t => {
   }
 
   const mariaUserCreated = (await request(app)
-    .post("/person")
+    .post('/person')
     .send(personToCreate)).body
 
   const fetchRes = await request(app).get(`/person/${mariaUserCreated._id}/json`)
 
   t.is(fetchRes.status, 200)
-  const mariaUserFetched = fetchRes.body
+
+  const fetchResJson = await request(app).get(`/person/${mariaUserCreated._id}/json`)
+
+  t.is(fetchResJson.status, 200)
+  const mariaUserFetched = fetchResJson.body
   t.deepEqual(mariaUserFetched, mariaUserCreated)
 })
 
@@ -56,3 +60,20 @@ test('Delete a person', async t => {
 
   t.is(fetch.status, 404)
 })
+
+test('Get list of people', async t => {
+  t.plan(4)
+  const personToCreate = { name: 'Omur Turan', age: 30, meetups: [] }
+
+  const _ = await request(app)
+    .post('/person')
+    .send(personToCreate)
+
+  const res = await request(app).get('/person/all')
+  t.is(res.status, 200)
+
+  const jsonRes = await request(app).get('/person/all/json')
+  t.is(jsonRes.status, 200)
+  t.true(Array.isArray(jsonRes.body), 'Body should be an array')
+  t.true(jsonRes.body.length > 0);
+});
