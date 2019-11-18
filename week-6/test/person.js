@@ -18,3 +18,41 @@ test('Create new person', async t => {
   t.is(res.body.name, personToCreate.name)
   t.is(res.body.age, personToCreate.age)
 })
+
+test('Fetch a person', async t => {
+  t.plan(2)
+  const personToCreate = {
+    name: 'Maria Ovsyannikova',
+    age: 25,
+    meetups: []
+  }
+
+  const mariaUserCreated = (await request(app)
+    .post("/person")
+    .send(personToCreate)).body
+
+  const fetchRes = await request(app).get(`/person/${mariaUserCreated._id}/json`)
+
+  t.is(fetchRes.status, 200)
+  const mariaUserFetched = fetchRes.body
+  t.deepEqual(mariaUserFetched, mariaUserCreated)
+})
+
+test('Delete a person', async t => {
+  t.plan(3)
+
+  const personToCreate = { name: 'Celia Gomez', age: 33, meetups: [] }
+
+  const celiaUserCreated = (await request(app)
+    .post('/person')
+    .send(personToCreate)).body
+
+  const deleteRes = await request(app).delete(`/person/${celiaUserCreated._id}`)
+
+  t.is(deleteRes.status, 200)
+  t.is(deleteRes.ok, true)
+
+  const fetch = await request(app).get(`/person/${celiaUserCreated._id}/json`)
+
+  t.is(fetch.status, 404)
+})
