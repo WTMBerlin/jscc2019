@@ -16,6 +16,7 @@ router.get('/all/json', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   const user = await PersonService.find(req.params.id)
+  if (!user) res.status(404)
   res.render('data', { data: user })
 })
 

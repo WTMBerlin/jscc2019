@@ -1,6 +1,6 @@
 import test from 'ava'
 import request from 'supertest'
-const app = require('../index.js')
+import app from "../app"
 
 test('Create new person', async t => {
   t.plan(3)
@@ -75,5 +75,5 @@ test('Get list of people', async t => {
   const jsonRes = await request(app).get('/person/all/json')
   t.is(jsonRes.status, 200)
   t.true(Array.isArray(jsonRes.body), 'Body should be an array')
-  t.true(jsonRes.body.length > 0);
-});
+  t.true(jsonRes.body.length > 0)
+})
