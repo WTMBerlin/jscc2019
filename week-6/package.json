@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ava --verbose --watch",
+    "test-coverage": "nyc ava --verbose"
   },
   "author": "Ömür Turan <omur@unumotors.com>",
   "license": "ISC",
@@ -18,6 +19,9 @@
     "pug": "^2.0.4"
   },
   "devDependencies": {
-    "nodemon": "^1.19.4"
+    "ava": "^2.4.0",
+    "nodemon": "^1.19.4",
+    "nyc": "^14.1.1",
+    "supertest": "^4.0.2"
   }
 }
