@@ -1,7 +1,9 @@
 extends layout
 
 block content
+  main
     h1 The number of the items is #{items.length}
+    h2 Hello World
     each item in items
       p #{item.name}
     pre #{JSON.stringify(items, null, 4)}

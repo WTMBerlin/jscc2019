@@ -8,9 +8,19 @@ router.get('/all', async (req, res) => {
   res.render('list', { items: meetups })
 })
 
+router.get('/all/json', async (req, res) => {
+  const meetups = await MeetupService.findAll()
+  res.send(meetups)
+})
+
 router.get('/:id', async (req, res) => {
   const meetup = await MeetupService.find(req.params.id)
   res.render('data', { data: meetup })
+})
+
+router.get('/:id/json', async (req, res) => {
+  const meetup = await MeetupService.find(req.params.id)
+  res.send(meetup)
 })
 
 router.post('/', async (req, res) => {
