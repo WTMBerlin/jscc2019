@@ -1,0 +1,14 @@
+version: "3"
+services:
+  app:
+    build: .
+    image: gcr.io/${GCLOUD_PROJECT}/app
+    environment:
+      MONGODB_CONNECTION_STRING: "mongodb://mongodb/wtm"
+      PORT: "3000"
+    ports:
+      - 3000:3000
+  mongodb:
+    image: mongo:4.2
+    ports:
+      - 27017:27017
