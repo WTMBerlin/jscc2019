@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "ava --verbose --watch",
     "test-coverage": "nyc ava --verbose"
   },
