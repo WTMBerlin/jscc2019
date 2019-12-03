@@ -27,11 +27,11 @@ export default new Vuex.Store({
       commit('SET_COUNTER', newCount)
     },
     async fetchMeetups({ commit }) {
-      const result = await axios.get('http://localhost:3000/meetup/all/json')
+      const result = await axios.get(`${process.env.VUE_APP_API_URL}/meetup/all/json`)
       commit('SET_MEETUPS', result.data)
     },
     async fetchMeetup({ commit }, id) {
-      const result = await axios.get(`http://localhost:3000/meetup/${id}/json`)
+      const result = await axios.get(`${process.env.VUE_APP_API_URL}/meetup/${id}/json`)
       commit('SET_MEETUP', result.data)
     }
   },
