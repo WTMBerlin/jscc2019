@@ -1,0 +1,29 @@
+{
+  "name": "week-4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "ava --verbose --watch",
+    "test-coverage": "nyc ava --verbose"
+  },
+  "author": "Ömür Turan <omur@unumotors.com>",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "chalk": "^2.4.2",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "flatted": "^2.0.1",
+    "mongoose": "^5.7.10",
+    "mongoose-autopopulate": "^0.9.1",
+    "pug": "^2.0.4"
+  },
+  "devDependencies": {
+    "ava": "^2.4.0",
+    "nodemon": "^1.19.4",
+    "nyc": "^14.1.1",
+    "supertest": "^4.0.2"
+  }
+}

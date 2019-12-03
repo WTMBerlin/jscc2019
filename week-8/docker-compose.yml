@@ -1,0 +1,26 @@
+version: "3"
+services:
+  backend:
+    image: registry.heroku.com/jscc19-${USER}-backend/web
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    environment:
+      MONGODB_CONNECTION_STRING: "mongodb://mongodb/wtm"
+      PORT: "3000"
+    ports:
+      - 3000:3000
+  frontend:
+    image: registry.heroku.com/jscc19-${USER}-frontend/web
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    environment:
+      VUE_APP_API_URL: "http://localhost:3000"
+      PORT: "8080"
+    ports:
+      - 8080:8080
+  mongodb:
+    image: mongo:4.2
+    ports:
+      - 27017:27017
