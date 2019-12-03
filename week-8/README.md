@@ -54,16 +54,13 @@ cd ${wtm-jscc2019}/week-8
 # now focusing on backend
 cd backend
 
+# this is only for heroku, because it works with git repos for each app
+git init
+
 # create the heroku app for backend
 heroku create "jscc19-${USER}-backend"
 
-# this is only for heroku, it works with git repos for each project
-git init
-
-# add heroku configuration to the git repo for the backend app
-heroku git:remote -a "jscc19-${USER}-backend"
-
-# let heroku build the image with docker and push it to its repositories, web here means it's an app with web interface
+# make heroku build the image with docker and push it to its repositories, web here means it's an app with web interface
 heroku container:push web
 
 # now we have pushed the image, it's time to release
@@ -77,4 +74,25 @@ heroku config:set MONGODB_CONNECTION_STRING="mongodb+srv://jscc19:<password>@wtm
 
 # now you can use other routes which requires mongodb. an empty list expected for now.
 heroku open /person/all
+
+# now focusing on frontend
+cd ../frontend
+
+# this is again only for heroku
+git init
+
+# create the heroku app for frontend
+heroku create "jscc19-${USER}-frontend"
+
+# make heroku build the image with docker and push it to its repositories, web here means it's an app with web interface
+heroku container:push web
+
+# configure backend url for frontend
+heroku config:set VUE_APP_API_URL="https://jscc19-${USER}-backend.herokuapp.com"
+
+# now we have pushed the image, it's time to release
+heroku container:release web
+
+# and open the app
+heroku open
 ```
