@@ -1,15 +1,11 @@
-FROM node:12
+FROM node:12-alpine
 
 WORKDIR /app
 
 COPY package.json package-lock.json ./
 RUN npm install --production
 
-COPY models/ ./models/
-COPY routes/ ./routes/
-COPY services/ ./services/
-COPY views/ ./views/
-COPY app.js index.js mongo-connection.js ./
+COPY ./ /app/
 
 EXPOSE 3000
 
