@@ -120,7 +120,7 @@ module.exports = {
 
 ### Port configuration
 
-Because Heroku assigns the containers the port via environment variable, all hard-coded port values are parameterized. node.js apps can read environment variables directly via `process.env.PORT`, so in `backend/index.js` you can see that port value is retrieved from that with a fallback value of `3000`. So if `process.env.PORT` is not defined, `3000` will be used, just as it was before.
+Because Heroku assigns the containers the port via environment variable, the port value which needs to be accessed from outer world should be parameterized. See `process.env.PORT` in `backend/index.js`, how the value is retrieved with a fallback value of `3000`. So if `process.env.PORT` is not defined, `3000` will be used, just as it was before.
 
 ### Backend URL configuration
 
@@ -134,4 +134,4 @@ We used this configuration in our `frontend/src/store/index.js` file, where we p
 
 For local setup we have used mongodb instance from our machine so far, which pointed out localhost. But in containerized world, because every container is like another machine in the network, localhost will not work. So we need to be able to change the mongodb url in our application. Therefore the `mongo-connection.js` has to change.
 
-`mongoose.connect('mongodb://localhost/wtm', ...` is the part where the mongodb instance is specified. To make it configurable we will just replace the hardcoded text with `process.env.MONGODB_CONNECTION_STRING`. So the result is going to be `mongoose.connect(process.env.MONGODB_CONNECTION_STRING || "mongodb://localhost/wtm", ...`. The or statement (`|| ) allows us to define a fallback (default) value, so our app will behave exactly the same way if we do not configure the`MONGODB_CONNECTION_STRING` environment variable.
+`mongoose.connect('mongodb://localhost/wtm', ...` is the part where the mongodb instance is specified. To make it configurable we will just replace the hardcoded text with `process.env.MONGODB_CONNECTION_STRING`. So the result is going to be `mongoose.connect(process.env.MONGODB_CONNECTION_STRING || "mongodb://localhost/wtm", ...`. The or statement (`||`) allows us to define a fallback (default) value, so our app will behave exactly the same way if we do not configure the`MONGODB_CONNECTION_STRING` environment variable.
