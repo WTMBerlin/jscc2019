@@ -99,6 +99,12 @@ heroku open
 
 ## Changes for deployment
 
+All of the changes made for deployment are about making our apps configurable, so that it will adapt into the new environment it is going to live. And you are sure that our app will live within this new environment safely, by starting to configure it in containerized local setup.
+
+One very efficient and easy way to configure apps is to use environment variables. They are accessed inside node.js code (or node.js alike codebases) via `process.env` object.
+
+Read more: [Node.js Everywhere with Environment Variables!](https://medium.com/the-node-js-collection/making-your-node-js-work-everywhere-with-environment-variables-2da8cdf6e786)
+
 ### Hostname
 
 I used vue serve function for deployment (which is not the best practice for production, but the fastest). The deployed application was not accessible from the outside world, because the vue server, for development purposes, only responds to `localhost` hostname or ip address. For allowing the vue serve for all hostnames, `devServer.disableHostCheck` was configured in `vue.config.js`:
@@ -123,3 +129,9 @@ Local development and deployments work different in ways. In local, most of the 
 Thanks to vue.js, it's build (and serve) system compiles environment variables just like a node.js app. See [docs here](https://cli.vuejs.org/guide/mode-and-env.html#environment-variables) for more information.
 
 We used this configuration in our `frontend/src/store/index.js` file, where we pointed our backend.
+
+### Backend mongoDB connection
+
+For local setup we have used mongodb instance from our machine so far, which pointed out localhost. But in containerized world, because every container is like another machine in the network, localhost will not work. So we need to be able to change the mongodb url in our application. Therefore the `mongo-connection.js` has to change.
+
+`mongoose.connect('mongodb://localhost/wtm', ...` is the part where the mongodb instance is specified. To make it configurable we will just replace the hardcoded text with `process.env.MONGODB_CONNECTION_STRING`. So the result is going to be `mongoose.connect(process.env.MONGODB_CONNECTION_STRING || "mongodb://localhost/wtm", ...`. The or statement (`|| ) allows us to define a fallback (default) value, so our app will behave exactly the same way if we do not configure the`MONGODB_CONNECTION_STRING` environment variable.
