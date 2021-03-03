@@ -16,7 +16,7 @@
     "flatted": "^2.0.1",
     "mongoose": "^5.7.10",
     "mongoose-autopopulate": "^0.9.1",
-    "pug": "^2.0.4"
+    "pug": "^3.0.1"
   },
   "devDependencies": {
     "ava": "^2.4.0",
