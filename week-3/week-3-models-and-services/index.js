@@ -1,7 +1,7 @@
-const Person = require('./models/person')
-const Meetup = require('./models/meetup')
-const PersonService = require('./services/person-service')
-const MeetupService = require('./services/meetup-service')
+import Person from './models/person.js'
+import Meetup from './models/meetup.js'
+import PersonService from './services/person-service.js'
+import MeetupService from './services/meetup-service.js'
 
 console.log('Hello World!')
 console.log('Hello World!')
