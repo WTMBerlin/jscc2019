@@ -1,6 +1,6 @@
-const chalk = require('chalk')
+import chalk from 'chalk'
 
-module.exports = class Meetup {
+const Meetup = class {
     constructor(name, location, attendees = [], id) {
         this.name = name
         this.location = location
@@ -16,3 +16,5 @@ module.exports = class Meetup {
         return new Meetup(name, location, attendees, id)
     }
 }
+
+export default Meetup

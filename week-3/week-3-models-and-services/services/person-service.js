@@ -1,5 +1,10 @@
-const BaseService = require('./base-service')
-const PersonModel = require('../models/person')
+import BaseService from './base-service.js'
+import PersonModel from '../models/person.js'
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 class PersonService extends BaseService {
     constructor() {
@@ -7,4 +12,4 @@ class PersonService extends BaseService {
     }
 }
 
-module.exports = new PersonService()
+export default new PersonService()
