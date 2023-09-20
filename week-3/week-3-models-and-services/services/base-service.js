@@ -1,5 +1,5 @@
 import {promises as fsp} from 'fs'
-import Flatted from 'flatted'
+import {parse as flattedParse, stringify as flattedStringify} from 'flatted'
 
 const Service = class {
 	constructor(model, dbPath) {
@@ -11,7 +11,7 @@ const Service = class {
 	async findAll() {
 		try{
 			const file = await fsp.readFile(this.dbPath, 'utf8');
-			const items = Flatted.parse(file).map(this.model.create)
+			const items = flattedParse(file).map(this.model.create)
 			return items
 		}catch(err){
 			if(err.code == 'ENOENT') {
@@ -54,7 +54,7 @@ const Service = class {
 
 	async saveAll(items) {
 		try{
-			return await fsp.writeFile(this.dbPath, Flatted.stringify(items))
+			return await fsp.writeFile(this.dbPath, flattedStringify(items))
 		}catch(err){
 			return err
 		}
