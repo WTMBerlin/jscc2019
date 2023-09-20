@@ -1,4 +1,4 @@
-module.exports = class Person {
+const Person = class {
     constructor(name, age, meetups = [], id) {
         this.name = name
         this.age = age
@@ -15,3 +15,5 @@ module.exports = class Person {
         return new Person(name, age, meetups, id);
     }
 }
+
+export default Person

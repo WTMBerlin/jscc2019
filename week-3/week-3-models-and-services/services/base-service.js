@@ -1,68 +1,64 @@
-const fs = require('fs')
-const Flatted = require('flatted/cjs');
+import {promises as fsp} from 'fs'
+import {parse as flattedParse, stringify as flattedStringify} from 'flatted'
 
-module.exports = class Service {
-  constructor(model, dbPath) {
-    this.model = model
-    this.dbPath = dbPath
-  }
+const Service = class {
+	constructor(model, dbPath) {
+		this.model = model
+		this.dbPath = dbPath
+	}
 
 
-  async findAll() {
-    return new Promise((resolve, reject) => {
-      fs.readFile(this.dbPath, 'utf8', async (err, file) => {
-        if (err) {
-          if (err.code == 'ENOENT') {
-            await this.saveAll([])
-            return resolve([])
-          }
+	async findAll() {
+		try{
+			const file = await fsp.readFile(this.dbPath, 'utf8');
+			const items = flattedParse(file).map(this.model.create)
+			return items
+		}catch(err){
+			if(err.code == 'ENOENT') {
+				await this.saveAll([])
+				return([])
+			}
+			console.log(err)
+			return err
+		}
+	}
 
-          return reject(err)
-        }
+	async add(item) {
+		const allItems = await this.findAll()
+		const lastItem = allItems[allItems.length - 1]
+		const lastItemsId = lastItem && lastItem.id || 0
+		item.id = lastItemsId + 1
 
-        const items = Flatted.parse(file).map(this.model.create)
+		allItems.push(item)
 
-        resolve(items)
-      })
-    })
-  }
+		await this.saveAll(allItems)
 
-  async add(item) {
-    const allItems = await this.findAll()
-    const lastItem = allItems[allItems.length - 1]
-    const lastItemsId = lastItem && lastItem.id || 0
-    item.id = lastItemsId + 1
+		return item
+	}
 
-    allItems.push(item)
+	async	del(itemId) {
+		const allItems = await this.findAll()
+		const itemIndex = allItems.findIndex(p => p.id == itemId)
+		if (itemIndex < 0) return
 
-    await this.saveAll(allItems)
+		allItems.splice(itemIndex, 1)
 
-    return item
-  }
+		await this.saveAll(allItems)
+	}
 
-  async  del(itemId) {
-    const allItems = await this.findAll()
-    const itemIndex = allItems.findIndex(p => p.id == itemId)
-    if (itemIndex < 0) return
+	async find(itemId = 1) {
+		const allItems = await this.findAll()
 
-    allItems.splice(itemIndex, 1)
+		return allItems.find(p => p.id == itemId)
+	}
 
-    await this.saveAll(allItems)
-  }
-
-  async find(itemId = 1) {
-    const allItems = await this.findAll()
-
-    return allItems.find(p => p.id == itemId)
-  }
-
-  async saveAll(items) {
-    return new Promise((resolve, reject) => {
-      fs.writeFile(this.dbPath, Flatted.stringify(items), (err, file) => {
-        if (err) return reject(err)
-
-        resolve()
-      })
-    })
-  }
+	async saveAll(items) {
+		try{
+			return await fsp.writeFile(this.dbPath, flattedStringify(items))
+		}catch(err){
+			return err
+		}
+	}
 }
+
+export default Service
